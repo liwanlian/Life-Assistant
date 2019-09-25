@@ -1,0 +1,95 @@
+package com.example.calcularion.UserControl;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.calcularion.MYsqldata.DBManager;
+import com.example.calcularion.MainActivity;
+import com.example.calcularion.R;
+import com.example.calcularion.Userdata.UserActivity;
+
+public class Editpasswordlast extends AppCompatActivity {
+
+    //界面控件
+    EditText forgettwo_newpassword;
+    EditText forgettwo_znewpassword;
+    Button bt_forgettwo;
+    DBManager db;
+    TextView tv_backtwo;
+    int id;
+    Bundle b;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_editpasswordlast);
+        init();
+        db=new DBManager(this);
+         b=getIntent().getBundleExtra("bundle");
+        id=b.getInt("id");
+        bt_forgettwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String password;
+                String zpassword;
+                password=forgettwo_newpassword.getText().toString();
+                zpassword=forgettwo_znewpassword.getText().toString();
+                long acc_num=b.getLong("acc_num");
+                if (password.equals(zpassword)){
+                    if (db.updatapassword(id,password)){
+
+                        Toast.makeText(Editpasswordlast.this,"修改密码成功",Toast.LENGTH_LONG).show();
+                        Intent intent=new Intent(Editpasswordlast.this, UserActivity.class);
+                        intent.putExtra("bundle",b);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(Editpasswordlast.this,"修改密码失败",Toast.LENGTH_LONG).show();
+
+                        Intent intent=new Intent(Editpasswordlast.this, MainActivity.class);
+                        intent.putExtra("bundle",b);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }
+                else{
+                    Toast.makeText(Editpasswordlast.this,"前后输入的密码不一致",Toast.LENGTH_LONG).show();
+                    forgettwo_newpassword.setText("");
+                    forgettwo_znewpassword.setText("");
+                }
+            }
+        });
+        tv_backtwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(Editpasswordlast.this, Edit_password.class);
+                intent.putExtra("bundle",b);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+    //控件初始化
+    private void init(){
+        forgettwo_newpassword=(EditText)findViewById(R.id.editpasswordlast_newpassword);
+        forgettwo_znewpassword=(EditText)findViewById(R.id.editpasswordlast_znewpassword);
+        bt_forgettwo=(Button)findViewById(R.id.editpasswordlast_sure);
+        tv_backtwo=(TextView)findViewById(R.id.editpasswordlast_back);
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
+            finish();
+            System.exit(0);
+        }
+    }
+}

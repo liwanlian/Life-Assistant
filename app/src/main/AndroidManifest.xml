@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.calcularion">
+    <!-- //网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- //读取SD卡 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Userdata.EditszActivity"></activity>
+        <activity android:name=".UserControl.Edit_usernamelast" />
+        <activity android:name=".UserControl.Editpasswordlast" />
+        <activity android:name=".UserControl.Edit_accnumlast" />
+        <activity android:name=".UserControl.Edit_username" />
+        <activity android:name=".UserControl.Edit_password" />
+        <activity android:name=".UserControl.Edit_accnum" />
+        <activity android:name=".Userdata.HomeActivity" />
+        <activity android:name=".Userdata.UserActivity" />
+        <activity android:name=".Userdata.CalActivity" />
+        <activity android:name=".Userdata.CheckActivity" />
+        <activity android:name=".Userdata.CountActivity" />
+        <activity android:name=".Forgetpassword.Forgettwo" />
+        <activity android:name=".Forgetpassword.Forgetone" />
+        <activity android:name=".Regester" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
