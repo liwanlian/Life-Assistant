@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,8 +16,9 @@ import com.example.calcularion.Configure.PhoneEditText;
 import com.example.calcularion.MYsqldata.DBManager;
 import com.example.calcularion.R;
 import com.example.calcularion.Userdata.UserActivity;
+import com.example.calcularion.exitsystem;
 
-public class Edit_accnumlast extends AppCompatActivity implements View.OnClickListener {
+public class Edit_accnumlast extends exitsystem implements View.OnClickListener {
 
     //界面控件
     TextView tv_back;
@@ -26,6 +28,7 @@ public class Edit_accnumlast extends AppCompatActivity implements View.OnClickLi
     private int id;
     private DBManager db;
     private long oldacc;
+    private long exitTime=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +136,27 @@ public class Edit_accnumlast extends AppCompatActivity implements View.OnClickLi
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
             System.exit(0);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setAction(exitsystem.SYSTEM_EXIT);
+            sendBroadcast(intent);
         }
     }
 }

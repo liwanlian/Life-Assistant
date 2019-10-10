@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import com.example.calcularion.Configure.CustomBarChart;
 import com.example.calcularion.Configure.LineChartManager;
 import com.example.calcularion.MYsqldata.DBManager;
 import com.example.calcularion.R;
+import com.example.calcularion.exitsystem;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.LineData;
 
@@ -29,7 +31,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-public class CheckActivity extends AppCompatActivity {
+public class CheckActivity extends exitsystem {
 
 //界面控件
     Spinner sp_year,sp_month,sp_date;
@@ -61,6 +63,7 @@ public class CheckActivity extends AppCompatActivity {
    private int cposition=0;
    int[] iddatas;
    TextView currentmongth;
+   private long exitTime=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -375,6 +378,27 @@ public class CheckActivity extends AppCompatActivity {
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
             System.exit(0);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setAction(exitsystem.SYSTEM_EXIT);
+            sendBroadcast(intent);
         }
     }
 }

@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calcularion.R;
+import com.example.calcularion.exitsystem;
 
-public class CalActivity extends AppCompatActivity {
+public class CalActivity extends exitsystem {
     Button b1,b2,b3,b4;//1,2,3,4
     Button b5,b6,b7,b8;//5,6,7,8
     Button b9,b10,b11,b12;//9,*,+,=
@@ -31,6 +33,7 @@ public class CalActivity extends AppCompatActivity {
     int flagn=0;//按下运算数的标志，按下的时候为1，否则就为0
     int flagdeng=0;//按下等号的标志，按下为1，否则为0
     int flagling=0;//判断按下的0是否为首位
+    private long exitTime=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -596,6 +599,27 @@ public class CalActivity extends AppCompatActivity {
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
             System.exit(0);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setAction(exitsystem.SYSTEM_EXIT);
+            sendBroadcast(intent);
         }
     }
 }

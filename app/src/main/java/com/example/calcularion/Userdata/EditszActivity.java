@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,8 +14,9 @@ import android.widget.Toast;
 
 import com.example.calcularion.MYsqldata.DBManager;
 import com.example.calcularion.R;
+import com.example.calcularion.exitsystem;
 
-public class EditszActivity extends AppCompatActivity {
+public class EditszActivity extends exitsystem {
 
     //界面控件
     TextView jizhang_back;
@@ -23,6 +25,7 @@ public class EditszActivity extends AppCompatActivity {
     EditText jizhang_jine,jizhang_remark;
     Button jizhang_sure;
     private DBManager db;
+    private long exitTime=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +126,27 @@ public class EditszActivity extends AppCompatActivity {
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
             System.exit(0);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode== KeyEvent.KEYCODE_BACK){
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void exit() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(getApplicationContext(),
+                    "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setAction(exitsystem.SYSTEM_EXIT);
+            sendBroadcast(intent);
         }
     }
 }
